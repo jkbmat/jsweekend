@@ -1,0 +1,22 @@
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.Loader {
+	display: inline-block;
+	text-align: center;
+
+	&--fullWidth {
+		display: block;
+	}
+
+	&__spinner {
+		animation: rotate 1s infinite linear;
+	}
+}

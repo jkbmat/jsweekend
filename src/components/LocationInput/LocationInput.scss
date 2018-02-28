@@ -1,0 +1,18 @@
+.LocationInput {
+	position: relative;
+
+	&__suggestions {
+		position: absolute;
+		width: 400px;
+		z-index: 100;
+		text-align: left;
+		background: white;
+		border: 1px solid #3b3b3b;
+		border-radius: 0 5px 5px 5px;
+		padding: 0.5em;
+	}
+
+	&__suggestions-empty {
+		text-align: center;
+	}
+}
