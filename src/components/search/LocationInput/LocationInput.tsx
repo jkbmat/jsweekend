@@ -65,7 +65,10 @@ export default class LocationInput extends React.Component<TProps, TState> {
 										) : (
 											<div className='LocationInput__suggestions-list'>
 												{suggestions.map((suggestion, index) => (
-													<div key={index}>{suggestion.name}</div>
+													<div className='Suggestion' key={index}>
+														<div className='Suggestion__name'>{suggestion.name}</div>
+														<div className='Suggestion__tag'>{suggestion.type.replace(/_/g, ' ')}</div>
+													</div>
 												))}
 											</div>
 										)}
