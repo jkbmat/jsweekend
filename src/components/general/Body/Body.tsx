@@ -1,5 +1,5 @@
 import * as React from 'react'
-import SearchBox from 'components/SearchBox/SearchBox'
+import SearchBox from 'components/search/SearchBox/SearchBox'
 
 import './Body.css'
 

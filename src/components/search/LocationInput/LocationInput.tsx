@@ -2,8 +2,9 @@ import * as React from 'react'
 
 import './LocationInput.css'
 
-import {TLocation} from '../../types/TLocation'
-import Loader from '../Loader/Loader'
+import Loader from 'components/general/Loader/Loader'
+
+import {TLocation} from 'types/TLocation'
 
 
 interface TProps {
