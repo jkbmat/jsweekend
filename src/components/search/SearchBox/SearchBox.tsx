@@ -7,15 +7,16 @@ import LocationInput from 'components/search/LocationInput/LocationInput'
 
 import {getLocationSuggestions} from 'api/location'
 
-import {getFrom, TFieldInfo} from 'store/search/search-selectors'
+import {getFieldInfo, TFieldInfo} from 'store/search/search-selectors'
 import {
-	setIsLoading, setSuggestions, setValue,
+	setIsLoading, setSuggestions, setValue, setSearchValue, setSelectedSuggestion,
 } from 'store/search/search-actions'
 
 import {TStoreState} from 'store/store'
+import {ESearchInputField} from 'store/search/search-defaultState'
 import {
-	TSetIsLoadingAction, TSetSuggestionsAction, TSetValueAction,
-	TSetIsLoadingPayload, TSetSuggestionsPayload, TSetValuePayload,
+	TSetIsLoadingAction, TSetSuggestionsAction, TSetValueAction, TSetSearchValueAction, TSetSelectedSuggestionAction,
+	TSetIsLoadingPayload, TSetSuggestionsPayload, TSetValuePayload, TSetSearchValuePayload, TSetSelectedSuggestionPayload,
 } from 'store/search/search-actions'
 
 import './SearchBox.css'
@@ -27,8 +28,10 @@ interface TConnectedProps {
 	to: TFieldInfo,
 
 	setValue: (payload: TSetValuePayload) => TSetValueAction,
+	setSearchValue: (payload: TSetSearchValuePayload) => TSetSearchValueAction,
 	setSuggestions: (payload: TSetSuggestionsPayload) => TSetSuggestionsAction,
 	setIsLoading: (payload: TSetIsLoadingPayload) => TSetIsLoadingAction,
+	setSelectedSuggestion: (payload: TSetSelectedSuggestionPayload) => TSetSelectedSuggestionAction,
 }
 
 type TProps = TOwnProps & TConnectedProps
@@ -41,16 +44,22 @@ class SearchBox extends React.Component<TProps> {
 		this.loadSuggestions = debounce(this.loadSuggestions, 500)
 	}
 
-	handleChangeInput = (field: 'from' | 'to', value: string) => {
-		const {setValue, setIsLoading} = this.props
+	handleChangeInput = (field: ESearchInputField, value: string) => {
+		const {setSearchValue, setIsLoading} = this.props
 
-		setValue({field: field, value})
+		setSearchValue({field, value})
 
-		setIsLoading({field: field, value: true})
+		setIsLoading({field, value: true})
 		this.loadSuggestions(field, value)
 	}
 
-	loadSuggestions = async (field: 'from' | 'to', term: string) => {
+	handleSetSelectedSuggestion = (field: ESearchInputField, value: number | null) => {
+		const {setSelectedSuggestion} = this.props
+
+		setSelectedSuggestion({field, value})
+	}
+
+	loadSuggestions = async (field: ESearchInputField, term: string) => {
 		const {setIsLoading, setSuggestions} = this.props
 
 		const suggestions = (await getLocationSuggestions(term)).locations
@@ -67,10 +76,12 @@ class SearchBox extends React.Component<TProps> {
 				<div className='SearchBox__from'>From</div>
 				<div className='SearchBox__from-input'>
 					<LocationInput
-						onChange={partial(this.handleChangeInput, 'from')}
-						value={from.value}
+						onChange={partial(this.handleChangeInput, ESearchInputField.FROM)}
+						setSelectedSuggestion={partial(this.handleSetSelectedSuggestion, ESearchInputField.FROM)}
+						searchValue={from.searchValue}
 						suggestions={from.suggestions}
 						areSuggestionsLoading={from.isLoading}
+						selectedSuggestion={from.selectedSuggestion}
 					/>
 				</div>
 
@@ -79,10 +90,12 @@ class SearchBox extends React.Component<TProps> {
 				<div className='SearchBox__to'>To</div>
 				<div className='SearchBox__to-input'>
 					<LocationInput
-						onChange={partial(this.handleChangeInput, 'to')}
-						value={to.value}
+						onChange={partial(this.handleChangeInput, ESearchInputField.TO)}
+						setSelectedSuggestion={partial(this.handleSetSelectedSuggestion, ESearchInputField.TO)}
+						searchValue={to.searchValue}
 						suggestions={to.suggestions}
 						areSuggestionsLoading={to.isLoading}
+						selectedSuggestion={to.selectedSuggestion}
 					/>
 				</div>
 			</div>
@@ -95,13 +108,15 @@ export default connect(
 		const searchState = state.modules.search
 
 		return {
-			from: getFrom(searchState, 'from'),
-			to: getFrom(searchState, 'to'),
+			from: getFieldInfo(searchState, 'from'),
+			to: getFieldInfo(searchState, 'to'),
 		}
 	},
 	{
 		setValue,
+		setSearchValue,
 		setSuggestions,
 		setIsLoading,
+		setSelectedSuggestion,
 	}
 )(SearchBox)

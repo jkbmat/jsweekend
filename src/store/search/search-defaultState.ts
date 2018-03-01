@@ -1,23 +1,24 @@
 import {TLocation} from 'types/TLocation'
 
+const searchFieldUIDefaultState = {
+	isLoading: false,
+	selectedSuggestion: 1,
+}
+
+const searchFieldDataDefaultState = {
+	value: null,
+	searchValue: '',
+	suggestions: [],
+}
+
 export const defaultState: TSearchState = {
 	ui: {
-		from: {
-			isLoading: false
-		},
-		to: {
-			isLoading: false
-		},
+		from: searchFieldUIDefaultState,
+		to: searchFieldUIDefaultState,
 	},
 	data: {
-		from: {
-			value: '',
-			suggestions: [],
-		},
-		to: {
-			value: '',
-			suggestions: [],
-		},
+		from: searchFieldDataDefaultState,
+		to: searchFieldDataDefaultState,
 	},
 }
 
@@ -34,11 +35,18 @@ export type TSearchState = {
 
 export type TSearchFieldUI = {
 	isLoading: boolean,
+	selectedSuggestion: number | null,
 }
 
 export type TSearchFieldData = {
-	value: string,
+	value: TLocation | null,
+	searchValue: string,
 	suggestions: Array<TLocation>,
+}
+
+export enum ESearchInputField {
+	FROM = 'from',
+	TO = 'to',
 }
 
 export default defaultState

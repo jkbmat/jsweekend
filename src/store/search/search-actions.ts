@@ -3,12 +3,15 @@ import {ActionCreator} from 'redux'
 
 export enum ESearchAction {
 	SET_LOADING = 'SET_LOADING',
+	SET_SELECTED_SUGGESTION = 'SET_SELECTED_SUGGESTION',
 
 	SET_VALUE = 'SET_VALUE',
+	SET_SEARCH_VALUE = 'SET_SEARCH_VALUE',
 	SET_SUGGESTIONS = 'SET_SUGGESTIONS',
 }
 
-export type TSearchAction = TSetValueAction | TSetSuggestionsAction | TSetIsLoadingAction
+export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSuggestionsAction | TSetIsLoadingAction
+	| TSetSelectedSuggestionAction
 
 
 export const setValue: ActionCreator<TSetValueAction> = (payload: TSetValuePayload) => ({
@@ -23,7 +26,39 @@ export interface TSetValueAction {
 
 export type TSetValuePayload = {
 	field: 'to' | 'from'
+	value: TLocation,
+}
+
+
+export const setSearchValue: ActionCreator<TSetSearchValueAction> = (payload: TSetSearchValuePayload) => ({
+	type: ESearchAction.SET_SEARCH_VALUE,
+	payload,
+})
+
+export interface TSetSearchValueAction {
+	type: ESearchAction.SET_SEARCH_VALUE,
+	payload: TSetSearchValuePayload,
+}
+
+export type TSetSearchValuePayload = {
+	field: 'to' | 'from'
 	value: string,
+}
+
+
+export const setSelectedSuggestion: ActionCreator<TSetSelectedSuggestionAction> = (payload: TSetSelectedSuggestionPayload) => ({
+	type: ESearchAction.SET_SELECTED_SUGGESTION,
+	payload,
+})
+
+export interface TSetSelectedSuggestionAction {
+	type: ESearchAction.SET_SELECTED_SUGGESTION,
+	payload: TSetSelectedSuggestionPayload,
+}
+
+export type TSetSelectedSuggestionPayload = {
+	field: 'to' | 'from'
+	value: number | null,
 }
 
 
