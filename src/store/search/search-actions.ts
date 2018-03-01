@@ -27,7 +27,7 @@ export type TSetValuePayload = {
 }
 
 
-export const setSuggestions: ActionCreator<TSetSuggestionsAction> = (payload: TSetSuggestionsPayload) => ({
+export const setSuggestions = (payload: TSetSuggestionsPayload): TSetSuggestionsAction => ({
 	type: ESearchAction.SET_SUGGESTIONS,
 	payload,
 })
@@ -43,7 +43,7 @@ export type TSetSuggestionsPayload = {
 }
 
 
-export const setIsLoading: ActionCreator<TSetIsLoadingAction> = (payload: TSetIsLoadingPayload) => ({
+export const setIsLoading: (payload: TSetIsLoadingPayload) => TSetIsLoadingAction = (payload) => ({
 	type: ESearchAction.SET_LOADING,
 	payload,
 })

@@ -23,5 +23,6 @@ export interface TStoreState {
 	}
 }
 
+const w: Window & {__REDUX_DEVTOOLS_EXTENSION__?: any} = window
 
-export default createStore(reducer, defaultState)
+export default createStore(reducer, defaultState, w.__REDUX_DEVTOOLS_EXTENSION__ && w.__REDUX_DEVTOOLS_EXTENSION__())

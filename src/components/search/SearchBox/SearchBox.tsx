@@ -1,56 +1,57 @@
 import * as React from 'react'
 import {connect} from 'react-redux'
+import {debounce, partial} from 'lodash'
 import * as FontAwesome from 'react-fontawesome'
 
 import LocationInput from 'components/search/LocationInput/LocationInput'
 
 import {getLocationSuggestions} from 'api/location'
 
-import {getIsLoading, getSuggestions, getValue} from 'store/search/search-selectors'
-import {setIsLoading, setSuggestions, setValue} from 'store/search/search-actions'
+import {getFrom, TFieldInfo} from 'store/search/search-selectors'
+import {
+	setIsLoading, setSuggestions, setValue,
+} from 'store/search/search-actions'
 
-import {ActionCreator} from 'redux'
-import {TLocation} from 'types/TLocation'
 import {TStoreState} from 'store/store'
-import {TSetIsLoadingAction, TSetSuggestionsAction, TSetValueAction} from 'store/search/search-actions'
+import {
+	TSetIsLoadingAction, TSetSuggestionsAction, TSetValueAction,
+	TSetIsLoadingPayload, TSetSuggestionsPayload, TSetValuePayload,
+} from 'store/search/search-actions'
 
 import './SearchBox.css'
 
 
-interface TProps {
-	toValue: string,
-	toSuggestions: Array<TLocation>,
-	toIsLoading: boolean,
+interface TOwnProps {}
+interface TConnectedProps {
+	from: TFieldInfo,
+	to: TFieldInfo,
 
-	fromValue: string,
-	fromSuggestions: Array<TLocation>,
-	fromIsLoading: boolean,
-
-	setValue: ActionCreator<TSetValueAction>,
-	setSuggestions: ActionCreator<TSetSuggestionsAction>,
-	setIsLoading: ActionCreator<TSetIsLoadingAction>,
+	setValue: (payload: TSetValuePayload) => TSetValueAction,
+	setSuggestions: (payload: TSetSuggestionsPayload) => TSetSuggestionsAction,
+	setIsLoading: (payload: TSetIsLoadingPayload) => TSetIsLoadingAction,
 }
+
+type TProps = TOwnProps & TConnectedProps
 
 
 class SearchBox extends React.Component<TProps> {
-	handleChangeFrom = (value: string) => {
-		const {setValue} = this.props
+	constructor (props: TProps) {
+		super(props)
 
-		setValue({field: 'from', value})
-		this.loadSuggestions('from', value)
+		this.loadSuggestions = debounce(this.loadSuggestions, 500)
 	}
 
-	handleChangeTo = async (value: string) => {
-		const {setValue} = this.props
+	handleChangeInput = (field: 'from' | 'to', value: string) => {
+		const {setValue, setIsLoading} = this.props
 
-		setValue({field: 'to', value})
-		this.loadSuggestions('to', value)
+		setValue({field: field, value})
+
+		setIsLoading({field: field, value: true})
+		this.loadSuggestions(field, value)
 	}
 
 	loadSuggestions = async (field: 'from' | 'to', term: string) => {
 		const {setIsLoading, setSuggestions} = this.props
-
-		setIsLoading({field, value: true})
 
 		const suggestions = (await getLocationSuggestions(term)).locations
 		setSuggestions({field, value: suggestions})
@@ -59,17 +60,17 @@ class SearchBox extends React.Component<TProps> {
 	}
 
 	render () {
-		const {toValue, toSuggestions, toIsLoading, fromValue, fromSuggestions, fromIsLoading} = this.props
+		const {from, to} = this.props
 
 		return (
 			<div className='SearchBox'>
 				<div className='SearchBox__from'>From</div>
 				<div className='SearchBox__from-input'>
 					<LocationInput
-						onChange={this.handleChangeFrom}
-						value={fromValue}
-						suggestions={fromSuggestions}
-						areSuggestionsLoading={fromIsLoading}
+						onChange={partial(this.handleChangeInput, 'from')}
+						value={from.value}
+						suggestions={from.suggestions}
+						areSuggestionsLoading={from.isLoading}
 					/>
 				</div>
 
@@ -78,10 +79,10 @@ class SearchBox extends React.Component<TProps> {
 				<div className='SearchBox__to'>To</div>
 				<div className='SearchBox__to-input'>
 					<LocationInput
-						onChange={this.handleChangeTo}
-						value={toValue}
-						suggestions={toSuggestions}
-						areSuggestionsLoading={toIsLoading}
+						onChange={partial(this.handleChangeInput, 'to')}
+						value={to.value}
+						suggestions={to.suggestions}
+						areSuggestionsLoading={to.isLoading}
 					/>
 				</div>
 			</div>
@@ -94,13 +95,8 @@ export default connect(
 		const searchState = state.modules.search
 
 		return {
-			toValue: getValue(searchState, 'to'),
-			toSuggestions: getSuggestions(searchState, 'to'),
-			toIsLoading: getIsLoading(searchState, 'to'),
-
-			fromValue: getValue(searchState, 'from'),
-			fromSuggestions: getSuggestions(searchState, 'from'),
-			fromIsLoading: getIsLoading(searchState, 'from'),
+			from: getFrom(searchState, 'from'),
+			to: getFrom(searchState, 'to'),
 		}
 	},
 	{
