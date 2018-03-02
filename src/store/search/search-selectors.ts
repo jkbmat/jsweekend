@@ -3,7 +3,7 @@ import {createStructuredSelector} from 'reselect'
 import {TSearchState} from './search-defaultState'
 import {TLocation} from '../../types/TLocation'
 
-export const getValue = (state: TSearchState, field: 'from' | 'to') => state.data[field].value
+export const getLocation = (state: TSearchState, field: 'from' | 'to') => state.data[field].location
 
 export const getSearchValue = (state: TSearchState, field: 'from' | 'to') => state.data[field].searchValue
 
@@ -14,7 +14,7 @@ export const getIsLoading = (state: TSearchState, field: 'from' | 'to') => state
 export const getSelectedSuggestion = (state: TSearchState, field: 'from' | 'to') => state.ui[field].selectedSuggestion
 
 export const getFieldInfo: (state: TSearchState, field: 'from' | 'to') => TFieldInfo = createStructuredSelector({
-	value: getValue,
+	location: getLocation,
 	searchValue: getSearchValue,
 	suggestions: getSuggestions,
 	isLoading: getIsLoading,
@@ -22,7 +22,7 @@ export const getFieldInfo: (state: TSearchState, field: 'from' | 'to') => TField
 })
 
 export type TFieldInfo = {
-	value: TLocation | null,
+	location: TLocation | null,
 	searchValue: string,
 	suggestions: Array<TLocation>,
 	isLoading: boolean,

@@ -1,0 +1,27 @@
+.SelectedLocation {
+	padding: 0.5em;
+	border: 1px solid #3b3b3b;
+	display: flex;
+	border-radius: 5px;
+	cursor: pointer;
+	text-align: left;
+
+	&:hover &__remove {
+		visibility: visible;
+	}
+
+	&__name {
+		flex-grow: 1;
+	}
+
+	&__tag {
+		flex-shrink: 1;
+		margin-left: 1em;
+	}
+
+	&__remove {
+		flex-shrink: 1;
+		margin-left: 1em;
+		visibility: hidden;
+	}
+}

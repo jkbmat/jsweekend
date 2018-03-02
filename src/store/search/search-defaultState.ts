@@ -6,7 +6,7 @@ const searchFieldUIDefaultState = {
 }
 
 const searchFieldDataDefaultState = {
-	value: null,
+	location: null,
 	searchValue: '',
 	suggestions: [],
 }
@@ -39,7 +39,7 @@ export type TSearchFieldUI = {
 }
 
 export type TSearchFieldData = {
-	value: TLocation | null,
+	location: TLocation | null,
 	searchValue: string,
 	suggestions: Array<TLocation>,
 }

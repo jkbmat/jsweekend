@@ -5,8 +5,8 @@ import {ESearchAction, TSearchAction} from './search-actions'
 
 export default (state: TSearchState = defaultState, action: TSearchAction): TSearchState => {
 	switch (action.type) {
-		case ESearchAction.SET_VALUE:
-			return iassign(state, (s) => s.data[action.payload.field].value, () => action.payload.value)
+		case ESearchAction.SET_LOCATION:
+			return iassign(state, (s) => s.data[action.payload.field].location, () => action.payload.value)
 
 		case ESearchAction.SET_SEARCH_VALUE:
 			return iassign(state, (s) => s.data[action.payload.field].searchValue, () => action.payload.value)

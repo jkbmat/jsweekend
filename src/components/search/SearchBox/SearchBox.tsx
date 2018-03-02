@@ -20,6 +20,8 @@ import {
 } from 'store/search/search-actions'
 
 import './SearchBox.css'
+import SelectedLocation from 'components/search/SelectedLocation/SelectedLocation'
+import {TLocation} from 'types/TLocation'
 
 
 interface TOwnProps {}
@@ -53,10 +55,17 @@ class SearchBox extends React.Component<TProps> {
 		this.loadSuggestions(field, value)
 	}
 
-	handleSetSelectedSuggestion = (field: ESearchInputField, value: number | null) => {
+	handleSelectSuggestion = (field: ESearchInputField, value: number | null) => {
 		const {setSelectedSuggestion} = this.props
 
 		setSelectedSuggestion({field, value})
+	}
+
+	handleSetLocation = (field: ESearchInputField, value: TLocation | null) => {
+		const {setValue, setSearchValue} = this.props
+
+		setValue({field, value})
+		setSearchValue({field, value: ''})
 	}
 
 	loadSuggestions = async (field: ESearchInputField, term: string) => {
@@ -74,29 +83,45 @@ class SearchBox extends React.Component<TProps> {
 		return (
 			<div className='SearchBox'>
 				<div className='SearchBox__from'>From</div>
-				<div className='SearchBox__from-input'>
-					<LocationInput
-						onChange={partial(this.handleChangeInput, ESearchInputField.FROM)}
-						setSelectedSuggestion={partial(this.handleSetSelectedSuggestion, ESearchInputField.FROM)}
-						searchValue={from.searchValue}
-						suggestions={from.suggestions}
-						areSuggestionsLoading={from.isLoading}
-						selectedSuggestion={from.selectedSuggestion}
-					/>
+				<div className='SearchBox__input-from SearchBox__input'>
+					{from.location ? (
+						<SelectedLocation
+							location={from.location}
+							onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.FROM, null)}
+						/>
+					) : (
+						<LocationInput
+							onChange={partial(this.handleChangeInput, ESearchInputField.FROM)}
+							onSetLocation={partial(this.handleSetLocation, ESearchInputField.FROM)}
+							onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.FROM)}
+							searchValue={from.searchValue}
+							suggestions={from.suggestions}
+							areSuggestionsLoading={from.isLoading}
+							selectedSuggestion={from.selectedSuggestion}
+						/>
+					)}
 				</div>
 
 				<FontAwesome name='plane' className='SearchBox__separator'/>
 
 				<div className='SearchBox__to'>To</div>
-				<div className='SearchBox__to-input'>
-					<LocationInput
-						onChange={partial(this.handleChangeInput, ESearchInputField.TO)}
-						setSelectedSuggestion={partial(this.handleSetSelectedSuggestion, ESearchInputField.TO)}
-						searchValue={to.searchValue}
-						suggestions={to.suggestions}
-						areSuggestionsLoading={to.isLoading}
-						selectedSuggestion={to.selectedSuggestion}
-					/>
+				<div className='SearchBox__input-to SearchBox__input'>
+					{to.location ? (
+						<SelectedLocation
+							location={to.location}
+							onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.TO, null)}
+						/>
+					) : (
+						<LocationInput
+							onChange={partial(this.handleChangeInput, ESearchInputField.TO)}
+							onSetLocation={partial(this.handleSetLocation, ESearchInputField.TO)}
+							onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.TO)}
+							searchValue={to.searchValue}
+							suggestions={to.suggestions}
+							areSuggestionsLoading={to.isLoading}
+							selectedSuggestion={to.selectedSuggestion}
+						/>
+					)}
 				</div>
 			</div>
 		)

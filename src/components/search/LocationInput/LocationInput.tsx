@@ -10,11 +10,13 @@ import {TLocation} from 'types/TLocation'
 
 interface TProps {
 	onChange: (newValue: string) => void,
+	onSetLocation: (location: TLocation) => void,
+	onSelectSuggestion: (suggestion: number | null) => void
+
 	searchValue: string,
 	suggestions: Array<TLocation>,
 	areSuggestionsLoading: boolean,
 	selectedSuggestion: number | null,
-	setSelectedSuggestion: (selectedSuggestion: number | null) => void
 }
 
 interface TState {
@@ -28,39 +30,39 @@ export default class LocationInput extends React.Component<TProps, TState> {
 	}
 
 	handleFocus = () => {
-		const {setSelectedSuggestion} = this.props
+		const {onSelectSuggestion} = this.props
 
 		this.setState({areSuggestionsVisible: true})
-		setSelectedSuggestion(null)
+		onSelectSuggestion(null)
 	}
 
 	handleBlur = () => {
-		const {setSelectedSuggestion} = this.props
+		const {onSelectSuggestion} = this.props
 
 		this.setState({areSuggestionsVisible: false})
-		setSelectedSuggestion(null)
+		onSelectSuggestion(null)
 	}
 
 	handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-		const {setSelectedSuggestion} = this.props
+		const {onSelectSuggestion} = this.props
 
 		this.props.onChange(e.currentTarget.value)
-		setSelectedSuggestion(null)
+		onSelectSuggestion(null)
 	}
 
 	handleKeyPress = (e: any) => {
-		const {setSelectedSuggestion, selectedSuggestion, suggestions} = this.props
+		const {onSelectSuggestion, onSetLocation, selectedSuggestion, suggestions} = this.props
 
 		// WORKAROUND:
 		// Typescript wanted e typed as KeyboardEvent<HTMLInputElement>,
 		// but then said, that KeyboardEvent is not generic
 		const event = e as KeyboardEvent
-		console.log(event.key)
+
 		switch (event.key) {
 			case 'ArrowUp': {
 				const newValue = selectedSuggestion === null ? suggestions.length - 1 : selectedSuggestion - 1
 
-				setSelectedSuggestion(newValue === -1 ? suggestions.length - 1 : newValue)
+				onSelectSuggestion(newValue === -1 ? suggestions.length - 1 : newValue)
 				event.preventDefault()
 
 				break
@@ -69,7 +71,16 @@ export default class LocationInput extends React.Component<TProps, TState> {
 			case 'ArrowDown': {
 				const newValue = selectedSuggestion === null ? 0 : selectedSuggestion + 1
 
-				setSelectedSuggestion(newValue === suggestions.length ? 0 : newValue)
+				onSelectSuggestion(newValue === suggestions.length ? 0 : newValue)
+				event.preventDefault()
+
+				break
+			}
+
+			case 'Enter': {
+				if (typeof selectedSuggestion === 'number') {
+					onSetLocation(suggestions[selectedSuggestion])
+				}
 				event.preventDefault()
 
 				break
@@ -81,7 +92,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 	}
 
 	render () {
-		const {searchValue, suggestions, areSuggestionsLoading, selectedSuggestion} = this.props
+		const {onSetLocation, searchValue, suggestions, areSuggestionsLoading, selectedSuggestion} = this.props
 		const {areSuggestionsVisible} = this.state
 
 		let SuggestionsContent = () => {
@@ -99,6 +110,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 
 			return (
 				<Suggestions
+					onSetLocation={onSetLocation}
 					suggestions={suggestions}
 					selectedSuggestion={selectedSuggestion}
 				/>

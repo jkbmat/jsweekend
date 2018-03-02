@@ -5,7 +5,7 @@ export enum ESearchAction {
 	SET_LOADING = 'SET_LOADING',
 	SET_SELECTED_SUGGESTION = 'SET_SELECTED_SUGGESTION',
 
-	SET_VALUE = 'SET_VALUE',
+	SET_LOCATION = 'SET_LOCATION',
 	SET_SEARCH_VALUE = 'SET_SEARCH_VALUE',
 	SET_SUGGESTIONS = 'SET_SUGGESTIONS',
 }
@@ -15,18 +15,18 @@ export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSugges
 
 
 export const setValue: ActionCreator<TSetValueAction> = (payload: TSetValuePayload) => ({
-	type: ESearchAction.SET_VALUE,
+	type: ESearchAction.SET_LOCATION,
 	payload,
 })
 
 export interface TSetValueAction {
-	type: ESearchAction.SET_VALUE,
+	type: ESearchAction.SET_LOCATION,
 	payload: TSetValuePayload,
 }
 
 export type TSetValuePayload = {
 	field: 'to' | 'from'
-	value: TLocation,
+	value: TLocation | null,
 }
 
 
