@@ -3,6 +3,7 @@ import {TLocation} from 'types/TLocation'
 import * as FontAwesome from 'react-fontawesome'
 
 import './SelectedLocation.css'
+import LocationTag from 'components/general/LocationTag/LocationTag'
 
 
 interface TProps {
@@ -17,7 +18,7 @@ export default class SelectedLocation extends React.Component<TProps> {
 		return (
 			<div className='SelectedLocation' onClick={onRemoveLocation}>
 				<div className='SelectedLocation__name'>{location.name}</div>
-				<div className='SelectedLocation__tag'>{location.type}</div>
+				<div className='SelectedLocation__tag'><LocationTag type={location.type}/></div>
 				<div className='SelectedLocation__remove'>
 					<FontAwesome name='times'/>
 				</div>

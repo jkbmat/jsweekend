@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {partial} from 'lodash'
 
+import LocationTag from 'components/general/LocationTag/LocationTag'
+
 import {TLocation} from 'types/TLocation'
 
 import './Suggestions.css'
@@ -32,7 +34,7 @@ export class Suggestions extends React.Component<TProps> {
 						key={index}
 					>
 						<div className='Suggestion__name'>{suggestion.name}</div>
-						<div className='Suggestion__tag'>{suggestion.type.replace(/_/g, ' ')}</div>
+						<div className='Suggestion__tag'><LocationTag type={suggestion.type}/></div>
 					</div>
 				))}
 			</div>

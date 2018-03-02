@@ -1,18 +1,24 @@
+export enum ELocationType {
+	COUNTRY = 'country',
+	AIRPORT = 'airport',
+	CITY = 'city',
+}
+
 type TBase = {
 	id: string,
 	name: string,
 }
 
 export type TCountry = {
-	type: 'country',
+	type: ELocationType.COUNTRY,
 }
 
 export type TAirport = {
-	type: 'airport',
+	type: ELocationType.AIRPORT,
 }
 
 export type TCity = {
-	type: 'city',
+	type: ELocationType.CITY,
 }
 
 

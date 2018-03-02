@@ -2,12 +2,14 @@
 	padding: 0.5em;
 	border: 1px solid #3b3b3b;
 	display: flex;
+	align-items: center;
 	border-radius: 5px;
 	cursor: pointer;
 	text-align: left;
+	background: white;
 
 	&:hover &__remove {
-		visibility: visible;
+		opacity: 1;
 	}
 
 	&__name {
@@ -22,6 +24,6 @@
 	&__remove {
 		flex-shrink: 1;
 		margin-left: 1em;
-		visibility: hidden;
+		opacity: 0.5;
 	}
 }
