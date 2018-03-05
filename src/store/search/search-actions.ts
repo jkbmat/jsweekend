@@ -141,7 +141,6 @@ export const loadSuggestions: (payload: TLoadSuggestionsPayload) => ThunkAction<
 	async (dispatch: Dispatch<TSearchState>, getState: () => TStoreState) => {
 		const {field} = payload
 
-		console.log(getState())
 		dispatch(setIsLoading({field, value: true}))
 
 		const suggestions = (await apiGetLocationSuggestions(getSearchValue(getState().modules.search, field))).locations

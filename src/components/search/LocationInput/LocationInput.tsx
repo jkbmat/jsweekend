@@ -14,6 +14,7 @@ interface TProps {
 	onSelectSuggestion: (suggestion: number | null) => void
 	onFocus: () => void,
 	onBlur: () => void,
+	isFocused: boolean,
 
 	searchValue: string,
 	suggestions: Array<TLocation>,
@@ -27,8 +28,22 @@ interface TState {
 
 
 export default class LocationInput extends React.Component<TProps, TState> {
+	inputElement: HTMLInputElement | null = null
+
 	state = {
 		areSuggestionsVisible: false,
+	}
+
+	componentDidMount () {
+		if (this.inputElement && this.props.isFocused === true) {
+			this.inputElement.focus()
+		}
+	}
+
+	componentWillReceiveProps (newProps: TProps) {
+		if (this.inputElement && this.props.isFocused === false && newProps.isFocused === true) {
+			this.inputElement.focus()
+		}
 	}
 
 	handleFocus = () => {
@@ -54,8 +69,15 @@ export default class LocationInput extends React.Component<TProps, TState> {
 		onSelectSuggestion(null)
 	}
 
+	handleSetLocation = (location: TLocation) => {
+		const {onSetLocation, onBlur} = this.props
+
+		onBlur()
+		onSetLocation(location)
+	}
+
 	handleKeyPress = (e: any) => {
-		const {onSelectSuggestion, onSetLocation, selectedSuggestion, suggestions} = this.props
+		const {onSelectSuggestion, selectedSuggestion, suggestions} = this.props
 
 		// WORKAROUND:
 		// Typescript wanted e typed as KeyboardEvent<HTMLInputElement>,
@@ -83,7 +105,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 
 			case 'Enter': {
 				if (typeof selectedSuggestion === 'number') {
-					onSetLocation(suggestions[selectedSuggestion])
+					this.handleSetLocation(suggestions[selectedSuggestion])
 				}
 				event.preventDefault()
 
@@ -96,7 +118,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 	}
 
 	render () {
-		const {onSetLocation, searchValue, suggestions, areSuggestionsLoading, selectedSuggestion} = this.props
+		const {searchValue, suggestions, areSuggestionsLoading, selectedSuggestion} = this.props
 		const {areSuggestionsVisible} = this.state
 
 		let SuggestionsContent = () => {
@@ -114,7 +136,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 
 			return (
 				<Suggestions
-					onSetLocation={onSetLocation}
+					onSetLocation={this.handleSetLocation}
 					suggestions={suggestions}
 					selectedSuggestion={selectedSuggestion}
 				/>
@@ -130,6 +152,8 @@ export default class LocationInput extends React.Component<TProps, TState> {
 					value={searchValue}
 					onChange={this.handleChange}
 					onKeyDown={this.handleKeyPress}
+
+					ref={(el) => this.inputElement = el}
 				/>
 
 				{areSuggestionsVisible && (

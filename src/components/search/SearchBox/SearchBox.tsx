@@ -78,11 +78,15 @@ class SearchBox extends React.Component<TProps> {
 		setSelectedSuggestion({field, value})
 	}
 
-	handleSetLocation = (field: ESearchInputField, value: TLocation | null) => {
-		const {setValue, setSearchValue} = this.props
+	handleSetLocation = (field: ESearchInputField, value: TLocation | null, shouldSetFocus = false) => {
+		const {setValue, setSearchValue, setFocusedField} = this.props
 
 		setValue({field, value})
 		setSearchValue({field, value: ''})
+
+		if (shouldSetFocus) {
+			setFocusedField({value: field})
+		}
 	}
 
 	handleDateChange = (value: null | Moment) => {
@@ -132,7 +136,7 @@ class SearchBox extends React.Component<TProps> {
 						{from.location ? (
 							<SelectedLocation
 								location={from.location}
-								onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.FROM, null)}
+								onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.FROM, null, true)}
 							/>
 						) : (
 							<LocationInput
@@ -141,6 +145,7 @@ class SearchBox extends React.Component<TProps> {
 								onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.FROM)}
 								onFocus={partial(this.handleFocus, ESearchInputField.FROM)}
 								onBlur={this.handleBlur}
+								isFocused={focusedField === ESearchInputField.FROM}
 								searchValue={from.searchValue}
 								suggestions={from.suggestions}
 								areSuggestionsLoading={from.isLoading}
@@ -161,7 +166,7 @@ class SearchBox extends React.Component<TProps> {
 						{to.location ? (
 							<SelectedLocation
 								location={to.location}
-								onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.TO, null)}
+								onRemoveLocation={partial(this.handleSetLocation, ESearchInputField.TO, null, true)}
 							/>
 						) : (
 							<LocationInput
@@ -170,6 +175,7 @@ class SearchBox extends React.Component<TProps> {
 								onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.TO)}
 								onFocus={partial(this.handleFocus, ESearchInputField.TO)}
 								onBlur={this.handleBlur}
+								isFocused={focusedField === ESearchInputField.TO}
 								searchValue={to.searchValue}
 								suggestions={to.suggestions}
 								areSuggestionsLoading={to.isLoading}
