@@ -1,17 +1,24 @@
 import {TLocation} from 'types/TLocation'
-import {ActionCreator} from 'redux'
+import {ActionCreator, Dispatch} from 'redux'
 import {Moment} from 'moment'
 
-import {ESearchInputField} from './search-defaultState'
+import {apiGetLocationSuggestions} from 'api/location'
+
+import {getSearchValue} from 'store/search/search-selectors'
+
+import {ESearchInputField, TSearchState} from './search-defaultState'
+import {ThunkAction} from 'redux-thunk'
+import {TStoreState} from 'store/store'
+
 
 export enum ESearchAction {
-	SET_LOADING = 'SET_LOADING',
-	SET_SELECTED_SUGGESTION = 'SET_SELECTED_SUGGESTION',
+	SET_LOADING = '@search/SET_LOADING',
+	SET_SELECTED_SUGGESTION = '@search/SET_SELECTED_SUGGESTION',
 
-	SET_LOCATION = 'SET_LOCATION',
-	SET_SEARCH_VALUE = 'SET_SEARCH_VALUE',
-	SET_SUGGESTIONS = 'SET_SUGGESTIONS',
-	SET_DATE = 'SET_DATE',
+	SET_LOCATION = '@search/SET_LOCATION',
+	SET_SEARCH_VALUE = '@search/SET_SEARCH_VALUE',
+	SET_SUGGESTIONS = '@search/SET_SUGGESTIONS',
+	SET_DATE = '@search/SET_DATE',
 }
 
 export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSuggestionsAction | TSetIsLoadingAction
@@ -113,3 +120,20 @@ export type TSetIsLoadingPayload = {
 	value: boolean,
 }
 
+
+export const loadSuggestions: (payload: TLoadSuggestionsPayload) => ThunkAction<void, TStoreState, void> = (payload) =>
+	async (dispatch: Dispatch<TSearchState>, getState: () => TStoreState) => {
+		const {field} = payload
+
+		console.log(getState())
+		dispatch(setIsLoading({field, value: true}))
+
+		const suggestions = (await apiGetLocationSuggestions(getSearchValue(getState().modules.search, field))).locations
+		dispatch(setSuggestions({field, value: suggestions}))
+
+		dispatch(setIsLoading({field, value: false}))
+	}
+
+export type TLoadSuggestionsPayload = {
+	field: ESearchInputField,
+}

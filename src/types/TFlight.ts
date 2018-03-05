@@ -15,3 +15,5 @@ export type TFlight = {
 }
 
 export type TAirline = string
+
+export type TRouteRaw = Object

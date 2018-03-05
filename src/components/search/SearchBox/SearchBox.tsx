@@ -7,14 +7,12 @@ import LocationInput from 'components/search/LocationInput/LocationInput'
 import SelectedLocation from 'components/search/SelectedLocation/SelectedLocation'
 import DateSelection from 'components/general/DateSelection/DateSelection'
 
-import {getLocationSuggestions} from 'api/location'
-
 import {getDate, getFieldInfo} from 'store/search/search-selectors'
 import {
-	setIsLoading as setIsLoadingSearch, setSuggestions, setValue, setSearchValue, setSelectedSuggestion, setDate,
+	setIsLoading, setSuggestions, setValue, setSearchValue, setSelectedSuggestion, setDate, loadSuggestions,
+	TLoadSuggestionsPayload,
 } from 'store/search/search-actions'
-import {getFlights} from 'api/flights'
-import {setIsLoading as setIsLoadingFlights, setFlights} from 'store/flights/flights-actions'
+import {loadFlights} from 'store/flights/flights-actions'
 
 import {ESearchInputField} from 'store/search/search-defaultState'
 
@@ -28,17 +26,13 @@ import {
 	TSetIsLoadingPayload as TSetIsLoadingPayloadSearch, TSetSuggestionsPayload, TSetValuePayload, TSetSearchValuePayload,
 	TSetDatePayload, TSetSelectedSuggestionPayload,
 } from 'store/search/search-actions'
-import {
-	TSetIsLoadingAction as TSetIsLoadingActionFlights, TSetFlightsAction,
-
-	TSetIsLoadingPayload as TSetIsLoadingPayloadFlights, TSetFlightsPayload,
-} from 'store/flights/flights-actions'
 import {TFieldInfo} from 'store/search/search-selectors'
 import {Moment} from 'moment'
 import {TLocation} from 'types/TLocation'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import './SearchBox.css'
+import {ThunkAction} from 'redux-thunk'
 
 interface TOwnProps {}
 interface TConnectedProps {
@@ -50,11 +44,11 @@ interface TConnectedProps {
 	setSearchValue: (payload: TSetSearchValuePayload) => TSetSearchValueAction,
 	setDate: (payload: TSetDatePayload) => TSetDateAction,
 	setSuggestions: (payload: TSetSuggestionsPayload) => TSetSuggestionsAction,
-	setIsLoadingSearch: (payload: TSetIsLoadingPayloadSearch) => TSetIsLoadingActionSearch,
+	setIsLoading: (payload: TSetIsLoadingPayloadSearch) => TSetIsLoadingActionSearch,
 	setSelectedSuggestion: (payload: TSetSelectedSuggestionPayload) => TSetSelectedSuggestionAction,
+	loadSuggestions: (payload: TLoadSuggestionsPayload) => ThunkAction<void, TStoreState, void>,
 
-	setIsLoadingFlights: (payload: TSetIsLoadingPayloadFlights) => TSetIsLoadingActionFlights,
-	setFlights: (payload: TSetFlightsPayload) => TSetFlightsAction,
+	loadFlights: () => ThunkAction<void, TStoreState, void>,
 }
 
 type TProps = TOwnProps & TConnectedProps
@@ -68,12 +62,12 @@ class SearchBox extends React.Component<TProps> {
 	}
 
 	handleChangeInput = (field: ESearchInputField, value: string) => {
-		const {setSearchValue, setIsLoadingSearch} = this.props
+		const {setSearchValue, setIsLoading} = this.props
 
 		setSearchValue({field, value})
 
-		setIsLoadingSearch({field, value: true})
-		this.loadSuggestions(field, value)
+		setIsLoading({field, value: true})
+		this.loadSuggestions(field)
 	}
 
 	handleSelectSuggestion = (field: ESearchInputField, value: number | null) => {
@@ -96,31 +90,15 @@ class SearchBox extends React.Component<TProps> {
 	}
 
 	handleSubmit = async () => {
-		const {setIsLoadingFlights, setFlights} = this.props
+		const {loadFlights} = this.props
 
-		if (!this.isFormValid()) {
-			return
-		}
-
-		const from = this.props.from.location as TLocation
-		const to = this.props.to.location as TLocation
-		const date = this.props.date as Moment
-
-		setIsLoadingFlights({value: true})
-
-		const flights = (await getFlights({from, to, dateFrom: date, dateTo: date.add(1, 'day')})).data
-
-		setFlights({value: flights})
-		setIsLoadingFlights({value: false})
+		loadFlights()
 	}
 
-	loadSuggestions = async (field: ESearchInputField, term: string) => {
-		const {setIsLoadingSearch, setSuggestions} = this.props
+	loadSuggestions = (field: ESearchInputField) => {
+		const {loadSuggestions} = this.props
 
-		const suggestions = (await getLocationSuggestions(term)).locations
-		setSuggestions({field, value: suggestions})
-
-		setIsLoadingSearch({field, value: false})
+		loadSuggestions({field})
 	}
 
 	isFormValid = () => {
@@ -217,10 +195,10 @@ export default connect(
 		setSearchValue,
 		setDate,
 		setSuggestions,
-		setIsLoadingSearch,
+		setIsLoading,
 		setSelectedSuggestion,
+		loadSuggestions,
 
-		setIsLoadingFlights,
-		setFlights,
+		loadFlights,
 	}
 )(SearchBox)
