@@ -1,4 +1,5 @@
 import {TLocation} from 'types/TLocation'
+import {Moment} from 'moment'
 
 const searchFieldUIDefaultState = {
 	isLoading: false,
@@ -9,6 +10,7 @@ const searchFieldDataDefaultState = {
 	location: null,
 	searchValue: '',
 	suggestions: [],
+	date: null,
 }
 
 export const defaultState: TSearchState = {
@@ -19,6 +21,7 @@ export const defaultState: TSearchState = {
 	data: {
 		from: searchFieldDataDefaultState,
 		to: searchFieldDataDefaultState,
+		date: null,
 	},
 }
 
@@ -30,6 +33,7 @@ export type TSearchState = {
 	data: {
 		from: TSearchFieldData,
 		to: TSearchFieldData,
+		date: Moment | null
 	},
 }
 
@@ -42,6 +46,7 @@ export type TSearchFieldData = {
 	location: TLocation | null,
 	searchValue: string,
 	suggestions: Array<TLocation>,
+	date: Moment | null,
 }
 
 export enum ESearchInputField {

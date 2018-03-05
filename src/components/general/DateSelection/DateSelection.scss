@@ -1,0 +1,18 @@
+@import "base";
+
+.DateSelection {
+	.react-datepicker__time-list {
+		margin-left: -40px !important;
+		padding-right: 0 !important;
+	}
+
+	.react-datepicker-wrapper, .react-datepicker__input-container {
+		display: block;
+	}
+
+	&__value {
+		@include button;
+		cursor: pointer;
+		text-align: center;
+	}
+}

@@ -3,7 +3,7 @@ import * as React from 'react'
 import './LocationInput.css'
 
 import Loader from 'components/general/Loader/Loader'
-import {Suggestions} from 'components/search/Suggestions/Suggestions'
+import Suggestions from 'components/search/Suggestions/Suggestions'
 
 import {TLocation} from 'types/TLocation'
 

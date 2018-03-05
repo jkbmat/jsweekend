@@ -1,24 +1,30 @@
 import {createStructuredSelector} from 'reselect'
 
-import {TSearchState} from './search-defaultState'
-import {TLocation} from '../../types/TLocation'
+import {ESearchInputField, TSearchState} from './search-defaultState'
+import {TLocation} from 'types/TLocation'
+import {Moment} from 'moment'
 
-export const getLocation = (state: TSearchState, field: 'from' | 'to') => state.data[field].location
+export const getLocation = (state: TSearchState, field: ESearchInputField) => state.data[field].location
 
-export const getSearchValue = (state: TSearchState, field: 'from' | 'to') => state.data[field].searchValue
+export const getSearchValue = (state: TSearchState, field: ESearchInputField) => state.data[field].searchValue
 
-export const getSuggestions = (state: TSearchState, field: 'from' | 'to') => state.data[field].suggestions
+export const getSuggestions = (state: TSearchState, field: ESearchInputField) => state.data[field].suggestions
 
-export const getIsLoading = (state: TSearchState, field: 'from' | 'to') => state.ui[field].isLoading
+export const getDate = (state: TSearchState, field: ESearchInputField | null) => {
+	return field === null ? state.data.date : state.data[field].date
+}
 
-export const getSelectedSuggestion = (state: TSearchState, field: 'from' | 'to') => state.ui[field].selectedSuggestion
+export const getIsLoading = (state: TSearchState, field: ESearchInputField) => state.ui[field].isLoading
 
-export const getFieldInfo: (state: TSearchState, field: 'from' | 'to') => TFieldInfo = createStructuredSelector({
+export const getSelectedSuggestion = (state: TSearchState, field: ESearchInputField) => state.ui[field].selectedSuggestion
+
+export const getFieldInfo: (state: TSearchState, field: ESearchInputField) => TFieldInfo = createStructuredSelector({
 	location: getLocation,
 	searchValue: getSearchValue,
 	suggestions: getSuggestions,
 	isLoading: getIsLoading,
 	selectedSuggestion: getSelectedSuggestion,
+	date: getDate,
 })
 
 export type TFieldInfo = {
@@ -27,4 +33,5 @@ export type TFieldInfo = {
 	suggestions: Array<TLocation>,
 	isLoading: boolean,
 	selectedSuggestion: number | null,
+	date: Moment | null,
 }

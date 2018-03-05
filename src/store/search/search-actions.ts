@@ -1,5 +1,8 @@
 import {TLocation} from 'types/TLocation'
 import {ActionCreator} from 'redux'
+import {Moment} from 'moment'
+
+import {ESearchInputField} from './search-defaultState'
 
 export enum ESearchAction {
 	SET_LOADING = 'SET_LOADING',
@@ -8,10 +11,11 @@ export enum ESearchAction {
 	SET_LOCATION = 'SET_LOCATION',
 	SET_SEARCH_VALUE = 'SET_SEARCH_VALUE',
 	SET_SUGGESTIONS = 'SET_SUGGESTIONS',
+	SET_DATE = 'SET_DATE',
 }
 
 export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSuggestionsAction | TSetIsLoadingAction
-	| TSetSelectedSuggestionAction
+	| TSetSelectedSuggestionAction | TSetDateAction
 
 
 export const setValue: ActionCreator<TSetValueAction> = (payload: TSetValuePayload) => ({
@@ -25,7 +29,7 @@ export interface TSetValueAction {
 }
 
 export type TSetValuePayload = {
-	field: 'to' | 'from'
+	field: ESearchInputField,
 	value: TLocation | null,
 }
 
@@ -41,8 +45,24 @@ export interface TSetSearchValueAction {
 }
 
 export type TSetSearchValuePayload = {
-	field: 'to' | 'from'
+	field: ESearchInputField,
 	value: string,
+}
+
+
+export const setDate: ActionCreator<TSetDateAction> = (payload: TSetDatePayload) => ({
+	type: ESearchAction.SET_DATE,
+	payload,
+})
+
+export interface TSetDateAction {
+	type: ESearchAction.SET_DATE,
+	payload: TSetDatePayload,
+}
+
+export type TSetDatePayload = {
+	field: ESearchInputField | null,
+	value: Moment | null,
 }
 
 
@@ -57,7 +77,7 @@ export interface TSetSelectedSuggestionAction {
 }
 
 export type TSetSelectedSuggestionPayload = {
-	field: 'to' | 'from'
+	field: ESearchInputField,
 	value: number | null,
 }
 
@@ -73,7 +93,7 @@ export interface TSetSuggestionsAction {
 }
 
 export type TSetSuggestionsPayload = {
-	field: 'to' | 'from'
+	field: ESearchInputField,
 	value: Array<TLocation>,
 }
 
@@ -89,7 +109,7 @@ export interface TSetIsLoadingAction {
 }
 
 export type TSetIsLoadingPayload = {
-	field: 'to' | 'from'
+	field: ESearchInputField,
 	value: boolean,
 }
 

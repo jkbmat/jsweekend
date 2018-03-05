@@ -11,6 +11,13 @@ export default (state: TSearchState = defaultState, action: TSearchAction): TSea
 		case ESearchAction.SET_SEARCH_VALUE:
 			return iassign(state, (s) => s.data[action.payload.field].searchValue, () => action.payload.value)
 
+		case ESearchAction.SET_DATE:
+			return iassign(
+				state,
+				(s) => action.payload.field === null ? s.data.date : s.data[action.payload.field].date,
+				() => action.payload.value
+			)
+
 		case ESearchAction.SET_SUGGESTIONS:
 			return iassign(state, (s) => s.data[action.payload.field].suggestions, () => action.payload.value)
 

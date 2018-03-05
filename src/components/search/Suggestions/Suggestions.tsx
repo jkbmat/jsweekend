@@ -15,7 +15,7 @@ interface TProps {
 	selectedSuggestion: number | null,
 }
 
-export class Suggestions extends React.Component<TProps> {
+export default class Suggestions extends React.Component<TProps> {
 	handleSelectLocation = (location: TLocation) => {
 		const {onSetLocation} = this.props
 
