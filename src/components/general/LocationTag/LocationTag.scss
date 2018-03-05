@@ -7,14 +7,26 @@
 	background: #3b3b3b;
 
 	&--city {
-		background: #ff0000;
+		background: #C05746;
 	}
 
 	&--country {
-		background: #00ff00;
+		background: #42213D;
 	}
 
 	&--airport {
-		background: #0000ff;
+		background: #414770;
+	}
+
+	&--autonomous_territory {
+		background: #46351D;
+	}
+
+	&--subdivision {
+		background: #063e1c;
+	}
+
+	&--station {
+		background: #264653;
 	}
 }
