@@ -14,6 +14,7 @@ import {TStoreState} from 'store/store'
 export enum ESearchAction {
 	SET_LOADING = '@search/SET_LOADING',
 	SET_SELECTED_SUGGESTION = '@search/SET_SELECTED_SUGGESTION',
+	SET_FOCUSED_FIELD = '@search/SET_FOCUSED_FIELD',
 
 	SET_LOCATION = '@search/SET_LOCATION',
 	SET_SEARCH_VALUE = '@search/SET_SEARCH_VALUE',
@@ -22,7 +23,7 @@ export enum ESearchAction {
 }
 
 export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSuggestionsAction | TSetIsLoadingAction
-	| TSetSelectedSuggestionAction | TSetDateAction
+	| TSetSelectedSuggestionAction | TSetDateAction | TSetFocusedFieldAction
 
 
 export const setValue: ActionCreator<TSetValueAction> = (payload: TSetValuePayload) => ({
@@ -118,6 +119,21 @@ export interface TSetIsLoadingAction {
 export type TSetIsLoadingPayload = {
 	field: ESearchInputField,
 	value: boolean,
+}
+
+
+export const setFocusedField: (payload: TSetFocusedFieldPayload) => TSetFocusedFieldAction = (payload) => ({
+	type: ESearchAction.SET_FOCUSED_FIELD,
+	payload,
+})
+
+export interface TSetFocusedFieldAction {
+	type: ESearchAction.SET_FOCUSED_FIELD,
+	payload: TSetFocusedFieldPayload,
+}
+
+export type TSetFocusedFieldPayload = {
+	value: ESearchInputField | null,
 }
 
 

@@ -12,6 +12,8 @@ interface TProps {
 	onChange: (newValue: string) => void,
 	onSetLocation: (location: TLocation) => void,
 	onSelectSuggestion: (suggestion: number | null) => void
+	onFocus: () => void,
+	onBlur: () => void,
 
 	searchValue: string,
 	suggestions: Array<TLocation>,
@@ -30,15 +32,17 @@ export default class LocationInput extends React.Component<TProps, TState> {
 	}
 
 	handleFocus = () => {
-		const {onSelectSuggestion} = this.props
+		const {onSelectSuggestion, onFocus} = this.props
 
+		onFocus()
 		this.setState({areSuggestionsVisible: true})
 		onSelectSuggestion(null)
 	}
 
 	handleBlur = () => {
-		const {onSelectSuggestion} = this.props
+		const {onSelectSuggestion, onBlur} = this.props
 
+		onBlur()
 		this.setState({areSuggestionsVisible: false})
 		onSelectSuggestion(null)
 	}

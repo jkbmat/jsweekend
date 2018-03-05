@@ -16,6 +16,8 @@ export const getDate = (state: TSearchState, field: ESearchInputField | null) =>
 
 export const getIsLoading = (state: TSearchState, field: ESearchInputField) => state.ui[field].isLoading
 
+export const getFocusedField = (state: TSearchState) => state.ui.focusedField
+
 export const getSelectedSuggestion = (state: TSearchState, field: ESearchInputField) => state.ui[field].selectedSuggestion
 
 export const getFieldInfo: (state: TSearchState, field: ESearchInputField) => TFieldInfo = createStructuredSelector({

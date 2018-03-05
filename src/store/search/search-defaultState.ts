@@ -17,6 +17,7 @@ export const defaultState: TSearchState = {
 	ui: {
 		from: searchFieldUIDefaultState,
 		to: searchFieldUIDefaultState,
+		focusedField: null,
 	},
 	data: {
 		from: searchFieldDataDefaultState,
@@ -29,6 +30,7 @@ export type TSearchState = {
 	ui: {
 		from: TSearchFieldUI,
 		to: TSearchFieldUI,
+		focusedField: ESearchInputField | null,
 	},
 	data: {
 		from: TSearchFieldData,

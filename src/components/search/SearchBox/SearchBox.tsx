@@ -7,10 +7,10 @@ import LocationInput from 'components/search/LocationInput/LocationInput'
 import SelectedLocation from 'components/search/SelectedLocation/SelectedLocation'
 import DateSelection from 'components/general/DateSelection/DateSelection'
 
-import {getDate, getFieldInfo} from 'store/search/search-selectors'
+import {getDate, getFieldInfo, getFocusedField} from 'store/search/search-selectors'
 import {
 	setIsLoading, setSuggestions, setValue, setSearchValue, setSelectedSuggestion, setDate, loadSuggestions,
-	TLoadSuggestionsPayload,
+	setFocusedField,
 } from 'store/search/search-actions'
 import {loadFlights} from 'store/flights/flights-actions'
 
@@ -21,10 +21,10 @@ import {areNotNull} from 'utils/areNotNull'
 import {TStoreState} from 'store/store'
 import {
 	TSetIsLoadingAction as TSetIsLoadingActionSearch, TSetSuggestionsAction, TSetValueAction, TSetSearchValueAction,
-	TSetDateAction, TSetSelectedSuggestionAction,
+	TSetDateAction, TSetSelectedSuggestionAction, TSetFocusedFieldAction,
 
 	TSetIsLoadingPayload as TSetIsLoadingPayloadSearch, TSetSuggestionsPayload, TSetValuePayload, TSetSearchValuePayload,
-	TSetDatePayload, TSetSelectedSuggestionPayload,
+	TSetDatePayload, TSetSelectedSuggestionPayload, TSetFocusedFieldPayload, TLoadSuggestionsPayload,
 } from 'store/search/search-actions'
 import {TFieldInfo} from 'store/search/search-selectors'
 import {Moment} from 'moment'
@@ -39,12 +39,14 @@ interface TConnectedProps {
 	from: TFieldInfo,
 	to: TFieldInfo,
 	date: Moment | null,
+	focusedField: ESearchInputField | null,
 
 	setValue: (payload: TSetValuePayload) => TSetValueAction,
 	setSearchValue: (payload: TSetSearchValuePayload) => TSetSearchValueAction,
 	setDate: (payload: TSetDatePayload) => TSetDateAction,
 	setSuggestions: (payload: TSetSuggestionsPayload) => TSetSuggestionsAction,
 	setIsLoading: (payload: TSetIsLoadingPayloadSearch) => TSetIsLoadingActionSearch,
+	setFocusedField: (payload: TSetFocusedFieldPayload) => TSetFocusedFieldAction,
 	setSelectedSuggestion: (payload: TSetSelectedSuggestionPayload) => TSetSelectedSuggestionAction,
 	loadSuggestions: (payload: TLoadSuggestionsPayload) => ThunkAction<void, TStoreState, void>,
 
@@ -95,6 +97,18 @@ class SearchBox extends React.Component<TProps> {
 		loadFlights()
 	}
 
+	handleFocus = (field: ESearchInputField) => {
+		const {setFocusedField} = this.props
+
+		setFocusedField({value: field})
+	}
+
+	handleBlur = () => {
+		const {setFocusedField} = this.props
+
+		setFocusedField({value: null})
+	}
+
 	loadSuggestions = (field: ESearchInputField) => {
 		const {loadSuggestions} = this.props
 
@@ -108,7 +122,7 @@ class SearchBox extends React.Component<TProps> {
 	}
 
 	render () {
-		const {from, to, date} = this.props
+		const {from, to, date, focusedField} = this.props
 
 		return (
 			<div className='SearchBox'>
@@ -125,6 +139,8 @@ class SearchBox extends React.Component<TProps> {
 								onChange={partial(this.handleChangeInput, ESearchInputField.FROM)}
 								onSetLocation={partial(this.handleSetLocation, ESearchInputField.FROM)}
 								onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.FROM)}
+								onFocus={partial(this.handleFocus, ESearchInputField.FROM)}
+								onBlur={this.handleBlur}
 								searchValue={from.searchValue}
 								suggestions={from.suggestions}
 								areSuggestionsLoading={from.isLoading}
@@ -133,7 +149,12 @@ class SearchBox extends React.Component<TProps> {
 						)}
 					</div>
 
-					<FontAwesome name='plane' className='SearchBox__separator'/>
+					<div className='SearchBox__separator'>
+						<FontAwesome
+							name='plane'
+							className={`SearchBox__separator-plane ${focusedField !== null ? `SearchBox__separator-plane--${focusedField}` : ''}`}
+						/>
+					</div>
 
 					<div className='SearchBox__to'>To:</div>
 					<div className='SearchBox__input-to SearchBox__input'>
@@ -147,6 +168,8 @@ class SearchBox extends React.Component<TProps> {
 								onChange={partial(this.handleChangeInput, ESearchInputField.TO)}
 								onSetLocation={partial(this.handleSetLocation, ESearchInputField.TO)}
 								onSelectSuggestion={partial(this.handleSelectSuggestion, ESearchInputField.TO)}
+								onFocus={partial(this.handleFocus, ESearchInputField.TO)}
+								onBlur={this.handleBlur}
 								searchValue={to.searchValue}
 								suggestions={to.suggestions}
 								areSuggestionsLoading={to.isLoading}
@@ -188,6 +211,7 @@ export default connect(
 			from: getFieldInfo(searchState, ESearchInputField.FROM),
 			to: getFieldInfo(searchState, ESearchInputField.TO),
 			date: getDate(searchState, null),
+			focusedField: getFocusedField(searchState),
 		}
 	},
 	{
@@ -197,6 +221,7 @@ export default connect(
 		setSuggestions,
 		setIsLoading,
 		setSelectedSuggestion,
+		setFocusedField,
 		loadSuggestions,
 
 		loadFlights,

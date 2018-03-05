@@ -24,6 +24,9 @@ export default (state: TSearchState = defaultState, action: TSearchAction): TSea
 		case ESearchAction.SET_LOADING:
 			return iassign(state, (s) => s.ui[action.payload.field].isLoading, () => action.payload.value)
 
+		case ESearchAction.SET_FOCUSED_FIELD:
+			return iassign(state, (s) => s.ui.focusedField, () => action.payload.value)
+
 		case ESearchAction.SET_SELECTED_SUGGESTION:
 			return iassign(state, (s) => s.ui[action.payload.field].selectedSuggestion, () => action.payload.value)
 
