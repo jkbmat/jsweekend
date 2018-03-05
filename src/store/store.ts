@@ -2,30 +2,30 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
 import thunk from 'redux-thunk'
 
 import searchReducer from 'store/search/search-reducer'
-import flightsReducer from 'store/flights/flights-reducer'
+import routesReducer from 'store/routes/routes-reducer'
 
 import searchState, {TSearchState} from 'store/search/search-defaultState'
-import flightsState, {TFlightsState} from 'store/flights/flights-defaultState'
+import flightsState, {TRoutesState} from 'store/routes/routes-defaultState'
 
 
 const reducer = combineReducers({
 	modules: combineReducers({
 		search: searchReducer,
-		flights: flightsReducer,
+		routes: routesReducer,
 	})
 })
 
-const defaultState = {
+const defaultState: TStoreState = {
 	modules: {
 		search: searchState,
-		flights: flightsState,
+		routes: flightsState,
 	}
 }
 
 export interface TStoreState {
 	modules: {
 		search: TSearchState,
-		flights: TFlightsState,
+		routes: TRoutesState,
 	}
 }
 

@@ -1,43 +1,45 @@
 import {ActionCreator, Dispatch} from 'redux'
 
+import {apiGetFlights} from 'api/flights'
+
 import {getDate, getLocation} from 'store/search/search-selectors'
+
+import {areNotNull} from 'utils/areNotNull'
 
 import {ESearchInputField, TSearchState} from 'store/search/search-defaultState'
 import {TStoreState} from 'store/store'
 import {ThunkAction} from 'redux-thunk'
 import {Moment} from 'moment'
 import {TLocation} from 'types/TLocation'
-import {TRoute, TRouteRaw} from 'types/TFlight'
-import {areNotNull} from 'utils/areNotNull'
-import {apiGetFlights} from 'api/flights'
+import {TRoute, TRouteRaw} from 'types/TRoute'
 
 
 export enum EFlightsAction {
-	SET_LOADING = '@flights/SET_LOADING',
-	SET_OFFSET = '@flights/SET_OFFSET',
+	SET_LOADING = '@routes/SET_LOADING',
+	SET_OFFSET = '@routes/SET_OFFSET',
 
-	SET_FLIGHTS = '@flights/SET_FLIGHTS',
+	SET_ROUTES = '@routes/SET_ROUTES',
 }
 
-export type TFlightsAction = TSetIsLoadingAction | TSetOffsetAction | TSetFlightsAction
+export type TFlightsAction = TSetIsLoadingAction | TSetOffsetAction | TSetRoutesAction
 
 
-export const setFlights: ActionCreator<TSetFlightsAction> = (payload: TSetFlightsPayload) => ({
-	type: EFlightsAction.SET_FLIGHTS,
+export const setRoutes: ActionCreator<TSetRoutesAction> = (payload: TSetRoutesPayload) => ({
+	type: EFlightsAction.SET_ROUTES,
 	payload,
 })
 
-export interface TSetFlightsAction {
-	type: EFlightsAction.SET_FLIGHTS,
-	payload: TSetFlightsPayload,
+export interface TSetRoutesAction {
+	type: EFlightsAction.SET_ROUTES,
+	payload: TSetRoutesPayload,
 }
 
-export type TSetFlightsPayload = {
+export type TSetRoutesPayload = {
 	value: Array<TRoute> | null,
 }
 
 
-export const setSearchValue: ActionCreator<TSetOffsetAction> = (payload: TSetOffestPayload) => ({
+export const setOffset: ActionCreator<TSetOffsetAction> = (payload: TSetOffestPayload) => ({
 	type: EFlightsAction.SET_OFFSET,
 	payload,
 })
@@ -76,13 +78,13 @@ export const loadFlights: () => ThunkAction<void, TStoreState, void> = () =>
 		let date = getDate(searchState, null) as Moment
 
 		if (!areNotNull(from, to, date)) {
-			throw new Error('Could not find flights: Search values are invalid.')
+			throw new Error('Could not find routes: Search values are invalid.')
 		}
 
 		dispatch(setIsLoading({value: true}))
 
 		const route = processRoute((await apiGetFlights({from, to, dateFrom: date, dateTo: date.clone().add(1, 'days')})).data)
-		dispatch(setFlights({value: route}))
+		dispatch(setRoutes({value: route}))
 
 		dispatch(setIsLoading({value: false}))
 

@@ -16,6 +16,7 @@
 	border: none;
 	font-size: 13px;
 	box-sizing: border-box;
+	outline: none;
 
 	&:disabled, &.disabled {
 		opacity: 0.5;

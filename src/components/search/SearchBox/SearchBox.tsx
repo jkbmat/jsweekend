@@ -12,7 +12,7 @@ import {
 	setIsLoading, setSuggestions, setValue, setSearchValue, setSelectedSuggestion, setDate, loadSuggestions,
 	setFocusedField,
 } from 'store/search/search-actions'
-import {loadFlights} from 'store/flights/flights-actions'
+import {loadFlights} from 'store/routes/routes-actions'
 
 import {ESearchInputField} from 'store/search/search-defaultState'
 

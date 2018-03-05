@@ -1,24 +1,24 @@
-import {TRoute} from 'types/TFlight'
+import {TRoute} from 'types/TRoute'
 
-export const defaultState: TFlightsState = {
+export const defaultState: TRoutesState = {
 	ui: {
 		isLoading: false,
 		offset: 0,
 		limit: 5,
 	},
 	data: {
-		flights: null,
+		routes: null,
 	},
 }
 
-export type TFlightsState = {
+export type TRoutesState = {
 	ui: {
 		isLoading: boolean,
 		offset: number,
 		limit: number,
 	},
 	data: {
-		flights: Array<TRoute> | null,
+		routes: Array<TRoute> | null,
 	},
 }
 
