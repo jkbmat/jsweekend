@@ -14,25 +14,17 @@ interface TProps {
 	onSelectSuggestion: (suggestion: number | null) => void
 	onFocus: () => void,
 	onBlur: () => void,
-	isFocused: boolean,
 
 	searchValue: string,
 	suggestions: Array<TLocation>,
+	isFocused: boolean,
 	areSuggestionsLoading: boolean,
 	selectedSuggestion: number | null,
 }
 
-interface TState {
-	areSuggestionsVisible: boolean,
-}
 
-
-export default class LocationInput extends React.Component<TProps, TState> {
+export default class LocationInput extends React.Component<TProps> {
 	inputElement: HTMLInputElement | null = null
-
-	state = {
-		areSuggestionsVisible: false,
-	}
 
 	componentDidMount () {
 		if (this.inputElement && this.props.isFocused === true) {
@@ -118,8 +110,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 	}
 
 	render () {
-		const {searchValue, suggestions, areSuggestionsLoading, selectedSuggestion} = this.props
-		const {areSuggestionsVisible} = this.state
+		const {searchValue, suggestions, areSuggestionsLoading, selectedSuggestion, isFocused} = this.props
 
 		let SuggestionsContent = () => {
 			if (areSuggestionsLoading) {
@@ -156,7 +147,7 @@ export default class LocationInput extends React.Component<TProps, TState> {
 					ref={(el) => this.inputElement = el}
 				/>
 
-				{areSuggestionsVisible && (
+				{isFocused && (
 					<div className='LocationInput__suggestions'>
 						<SuggestionsContent/>
 					</div>
