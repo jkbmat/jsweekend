@@ -8,13 +8,27 @@
 	box-shadow: 0 0 10px 0 #3b3b3b;
 	z-index: 2;
 
-	.Header__title {
+	&__title {
 		flex-grow: 1;
 		text-align: center;
 	}
 
-	.Header__logo {
+	&__logo {
 		flex-shrink: 1;
 		margin: 0 0.5em 0 1em;
+
+		&-image {
+			width: 32px;
+			height: 32px;
+			background: url('./../../../img/github-logo.png') no-repeat;
+			transition: 0.3s all;
+			border-radius: 100%;
+			transform: scaleX(1);
+		}
+
+		&:hover &-image {
+			background-image: url('https://avatars.githubusercontent.com/jkbmat?size=32');
+			transform: scaleX(-1);
+		}
 	}
 }
