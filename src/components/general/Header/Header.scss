@@ -1,9 +1,20 @@
 .Header {
-	text-align: center;
+	display: flex;
+	align-items: center;
 	font-size: 25px;
 	padding: 0.5em;
 	background: #3b3b3b;
 	color: white;
 	box-shadow: 0 0 10px 0 #3b3b3b;
 	z-index: 2;
+
+	.Header__title {
+		flex-grow: 1;
+		text-align: center;
+	}
+
+	.Header__logo {
+		flex-shrink: 1;
+		margin: 0 0.5em 0 1em;
+	}
 }
