@@ -5,32 +5,31 @@ import SearchBox from 'components/search/SearchBox/SearchBox'
 import Loader, {ELoaderSize} from 'components/general/Loader/Loader'
 import Routes from 'components/routes/Routes/Routes'
 
-import {getIsLoading, getRoutes} from 'store/routes/routes-selectors'
+import {getIsLoading} from 'store/general/general-selectors'
 
-import {TRoute} from 'types/TRoute'
 import {TStoreState} from 'store/store'
 
 import './Body.css'
 
 
 interface TProps {
-	routes: Array<TRoute> | null,
-
-	isLoadingRoutes: boolean,
+	isLoading: boolean,
 }
 
 class Body extends React.Component<TProps> {
 	render () {
-		const {routes, isLoadingRoutes} = this.props
+		const {isLoading} = this.props
 
 		return (
 			<div className='Body'>
-				<SearchBox/>
-				<div className='Body__main'>
-					{isLoadingRoutes && <Loader fullWidth size={ELoaderSize.LARGE} />}
+				{isLoading && (
+					<div className='Body__loading'>
+						<Loader size={ELoaderSize.LARGE} />
+					</div>
+				)}
 
-					{routes && !isLoadingRoutes && <Routes />}
-				</div>
+				<SearchBox/>
+				<Routes />
 			</div>
 		)
 	}
@@ -38,11 +37,10 @@ class Body extends React.Component<TProps> {
 
 export default connect(
 	(state: TStoreState) => {
-		const routesState = state.modules.routes
+		const generalStore = state.modules.general
 
 		return {
-			routes: getRoutes(routesState),
-			isLoadingRoutes: getIsLoading(routesState),
+			isLoading: getIsLoading(generalStore)
 		}
 	}
 )(Body)

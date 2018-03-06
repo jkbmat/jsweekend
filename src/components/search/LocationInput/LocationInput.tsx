@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import './LocationInput.css'
 
-import Loader from 'components/general/Loader/Loader'
+import Loader, {ELoaderSize} from 'components/general/Loader/Loader'
 import Suggestions from 'components/search/Suggestions/Suggestions'
 
 import {TLocation} from 'types/TLocation'
@@ -114,7 +114,7 @@ export default class LocationInput extends React.Component<TProps> {
 
 		let SuggestionsContent = () => {
 			if (areSuggestionsLoading) {
-				return <Loader fullWidth/>
+				return <Loader fullWidth size={ELoaderSize.SMALL}/>
 			}
 
 			if (!searchValue.length) {

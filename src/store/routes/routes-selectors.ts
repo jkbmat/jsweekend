@@ -11,9 +11,22 @@ export const getOffset = (state: TRoutesState) => state.ui.offset
 export const getLimit = (state: TRoutesState) => state.ui.limit
 
 
-export const getFlightsPaginated = createSelector(
+export const getRoutesPaginated = createSelector(
 	getRoutes, getOffset, getLimit,
-	(flights, offset, limit) => flights === null
+	(routes, offset, limit) => routes === null
 		? null
-		: flights.slice(offset, offset + limit)
+		: routes.slice(offset, offset + limit)
 )
+
+export const getNumPages = createSelector(
+	getRoutes, getLimit,
+	(routes, limit) => routes === null
+		? 0
+		: Math.ceil(routes.length / limit)
+)
+
+export const getPageNumber = createSelector(
+	getOffset, getLimit,
+	(offset, limit) => Math.floor(offset / limit)
+)
+

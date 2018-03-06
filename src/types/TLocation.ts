@@ -9,21 +9,31 @@ type TBase = {
 	name: string,
 }
 
-export type TCountry = {
+export type TCountry = TBase & {
 	type: ELocationType.COUNTRY,
 }
 
-export type TAirport = {
-	id: TAirportCode,
+export type TAirport = TBase & {
+	code: TAirportCode,
 	type: ELocationType.AIRPORT,
+	city: {
+		id: string,
+		name: string,
+		code: string,
+		country: {
+			id: string,
+			name: string,
+			code: string,
+		},
+	},
 }
 
-export type TCity = {
+export type TCity = TBase & {
 	type: ELocationType.CITY,
 }
 
 
-export type TLocation = TBase & (TCountry | TAirport | TCity)
+export type TLocation = TCountry | TAirport | TCity
 
 export type TLocationsRaw = {
 	locations: Array<TLocation>,
