@@ -3,15 +3,18 @@ import thunk from 'redux-thunk'
 
 import searchReducer from 'store/search/search-reducer'
 import routesReducer from 'store/routes/routes-reducer'
+import generalReducer from 'store/general/general-reducer'
 
 import searchState, {TSearchState} from 'store/search/search-defaultState'
 import flightsState, {TRoutesState} from 'store/routes/routes-defaultState'
+import generalState, {TGeneralState} from 'store/general/general-defaultState'
 
 
 const reducer = combineReducers({
 	modules: combineReducers({
 		search: searchReducer,
 		routes: routesReducer,
+		general: generalReducer,
 	})
 })
 
@@ -19,6 +22,7 @@ const defaultState: TStoreState = {
 	modules: {
 		search: searchState,
 		routes: flightsState,
+		general: generalState,
 	}
 }
 
@@ -26,6 +30,7 @@ export interface TStoreState {
 	modules: {
 		search: TSearchState,
 		routes: TRoutesState,
+		general: TGeneralState,
 	}
 }
 

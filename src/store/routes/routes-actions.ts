@@ -14,23 +14,23 @@ import {TLocation} from 'types/TLocation'
 import {TRoute, TRouteRaw} from 'types/TRoute'
 
 
-export enum EFlightsAction {
+export enum ERoutesAction {
 	SET_LOADING = '@routes/SET_LOADING',
 	SET_OFFSET = '@routes/SET_OFFSET',
 
 	SET_ROUTES = '@routes/SET_ROUTES',
 }
 
-export type TFlightsAction = TSetIsLoadingAction | TSetOffsetAction | TSetRoutesAction
+export type TRoutesAction = TSetIsLoadingAction | TSetOffsetAction | TSetRoutesAction
 
 
 export const setRoutes: ActionCreator<TSetRoutesAction> = (payload: TSetRoutesPayload) => ({
-	type: EFlightsAction.SET_ROUTES,
+	type: ERoutesAction.SET_ROUTES,
 	payload,
 })
 
 export interface TSetRoutesAction {
-	type: EFlightsAction.SET_ROUTES,
+	type: ERoutesAction.SET_ROUTES,
 	payload: TSetRoutesPayload,
 }
 
@@ -40,12 +40,12 @@ export type TSetRoutesPayload = {
 
 
 export const setOffset: ActionCreator<TSetOffsetAction> = (payload: TSetOffestPayload) => ({
-	type: EFlightsAction.SET_OFFSET,
+	type: ERoutesAction.SET_OFFSET,
 	payload,
 })
 
 export interface TSetOffsetAction {
-	type: EFlightsAction.SET_OFFSET,
+	type: ERoutesAction.SET_OFFSET,
 	payload: TSetOffestPayload,
 }
 
@@ -55,12 +55,12 @@ export type TSetOffestPayload = {
 
 
 export const setIsLoading: (payload: TSetIsLoadingPayload) => TSetIsLoadingAction = (payload) => ({
-	type: EFlightsAction.SET_LOADING,
+	type: ERoutesAction.SET_LOADING,
 	payload,
 })
 
 export interface TSetIsLoadingAction {
-	type: EFlightsAction.SET_LOADING,
+	type: ERoutesAction.SET_LOADING,
 	payload: TSetIsLoadingPayload,
 }
 

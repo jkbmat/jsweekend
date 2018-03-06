@@ -1,5 +1,6 @@
 import {Moment} from 'moment'
 import {TAirport} from 'types/TLocation'
+import {TAirline} from 'types/TAirline'
 
 export type TRoute = {
 	price: number,
@@ -13,7 +14,5 @@ export type TFlight = {
 	fromAirport: TAirport,
 	toAirport: TAirport,
 }
-
-export type TAirline = string
 
 export type TRouteRaw = Object
