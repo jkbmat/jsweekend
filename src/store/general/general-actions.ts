@@ -9,9 +9,9 @@ import {TAirline} from 'types/TAirline'
 
 
 export enum EGeneralAction {
-	SET_AIRLINES = '@general/SET_AIRLINES',
+	SET_AIRLINES = '@@general/SET_AIRLINES',
 
-	SET_LOADING = '@general/SET_LOADING',
+	SET_LOADING = '@@general/SET_LOADING',
 }
 
 export type TGeneralAction = TSetAirlinesAction | TSetIsLoadingAction

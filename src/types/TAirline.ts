@@ -1,5 +1,5 @@
 export type TAirline = {
-	code: string,
+	code: TAirlineCode,
 	name: string,
 }
 
@@ -7,3 +7,5 @@ export type TAirlineRaw = {
 	id: string,
 	name: string,
 }
+
+export type TAirlineCode = string

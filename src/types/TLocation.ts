@@ -14,6 +14,7 @@ export type TCountry = {
 }
 
 export type TAirport = {
+	id: TAirportCode,
 	type: ELocationType.AIRPORT,
 }
 
@@ -23,3 +24,9 @@ export type TCity = {
 
 
 export type TLocation = TBase & (TCountry | TAirport | TCity)
+
+export type TLocationsRaw = {
+	locations: Array<TLocation>,
+}
+
+export type TAirportCode = string

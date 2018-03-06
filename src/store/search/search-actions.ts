@@ -12,14 +12,14 @@ import {TStoreState} from 'store/store'
 
 
 export enum ESearchAction {
-	SET_LOADING = '@search/SET_LOADING',
-	SET_SELECTED_SUGGESTION = '@search/SET_SELECTED_SUGGESTION',
-	SET_FOCUSED_FIELD = '@search/SET_FOCUSED_FIELD',
+	SET_LOADING = '@@search/SET_LOADING',
+	SET_SELECTED_SUGGESTION = '@@search/SET_SELECTED_SUGGESTION',
+	SET_FOCUSED_FIELD = '@@search/SET_FOCUSED_FIELD',
 
-	SET_LOCATION = '@search/SET_LOCATION',
-	SET_SEARCH_VALUE = '@search/SET_SEARCH_VALUE',
-	SET_SUGGESTIONS = '@search/SET_SUGGESTIONS',
-	SET_DATE = '@search/SET_DATE',
+	SET_LOCATION = '@@search/SET_LOCATION',
+	SET_SEARCH_VALUE = '@@search/SET_SEARCH_VALUE',
+	SET_SUGGESTIONS = '@@search/SET_SUGGESTIONS',
+	SET_DATE = '@@search/SET_DATE',
 }
 
 export type TSearchAction = TSetValueAction | TSetSearchValueAction | TSetSuggestionsAction | TSetIsLoadingAction

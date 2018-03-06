@@ -1,6 +1,6 @@
 import {Moment} from 'moment'
-import {TAirport} from 'types/TLocation'
-import {TAirline} from 'types/TAirline'
+import {TAirport, TAirportCode} from 'types/TLocation'
+import {TAirline, TAirlineCode} from 'types/TAirline'
 
 export type TRoute = {
 	price: number,
@@ -15,4 +15,16 @@ export type TFlight = {
 	toAirport: TAirport,
 }
 
-export type TRouteRaw = Object
+export type TFlightsRaw = {
+	data: Array<{
+		price: number,
+
+		route: Array<{
+			dTimeUTC: number,
+			aTimeUTC: number,
+			airline: TAirlineCode,
+			flyFrom: TAirportCode,
+			flyTo: TAirportCode,
+		}>
+	}>,
+}
