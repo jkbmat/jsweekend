@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/moment-duration-format": "^2.2.0",
     "immutable-assign": "^2.0.4",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.5",
     "moment": "^2.21.0",
+    "moment-duration-format": "^2.2.2",
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",

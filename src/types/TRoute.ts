@@ -4,6 +4,7 @@ import {TAirline, TAirlineCode} from 'types/TAirline'
 
 export type TRoute = {
 	price: number,
+	currency: string,
 	flights: Array<TFlight>,
 }
 
@@ -16,6 +17,8 @@ export type TFlight = {
 }
 
 export type TFlightsRaw = {
+	currency: string,
+
 	data: Array<{
 		price: number,
 

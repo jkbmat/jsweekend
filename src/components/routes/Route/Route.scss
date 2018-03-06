@@ -1,0 +1,64 @@
+.Route {
+	border: 1px solid #3b3b3b;
+	border-radius: 3px;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		background: #eee;
+		border-radius: 3px;
+		padding: 0.5em 1em;
+	}
+
+	&__header-from {
+		flex-grow: 1;
+		display: flex;
+		width: 100%;
+	}
+
+	&__header-to {
+		flex-grow: 1;
+		display: flex;
+		width: 100%;
+	}
+
+	&__header-from-airport {
+		text-align: center;
+		margin: 0 1em;
+	}
+
+	&__header-to-airport {
+		text-align: center;
+		margin: 0 1em;
+	}
+
+	&__header-from-time {
+		flex-grow: 1;
+		text-align: right;
+	}
+
+	&__header-to-time {
+		flex-grow: 1;
+		text-align: left;
+	}
+
+	&__header-separator {
+		flex-shrink: 1;
+		margin: 0 2em;
+	}
+
+	&__header-duration {
+		margin-left: 1em;
+		font-weight: bold;
+		min-width: 170px;
+		max-width: 170px;
+		text-align: right;
+	}
+
+	&__header-price {
+		margin-right: 1em;
+		font-weight: bold;
+		max-width: 170px;
+		width: 170px;
+	}
+}

@@ -71,6 +71,18 @@ export type TSetIsLoadingPayload = {
 }
 
 
+export const setPageNumber: (payload: TSetPageNumberPayload) => ThunkAction<TSetOffsetAction, TStoreState, void> = (payload: TSetPageNumberPayload) =>
+	(dispatch: Dispatch<TSearchState>, getState: () => TStoreState) => {
+		const limit = getState().modules.routes.ui.limit
+
+		return dispatch(setOffset({value: payload.value * limit}))
+	}
+
+export type TSetPageNumberPayload = {
+	value: number,
+}
+
+
 export const loadFlights: () => ThunkAction<void, TStoreState, void> = () =>
 	async (dispatch: Dispatch<TSearchState>, getState: () => TStoreState) => {
 		const searchState = getState().modules.search
@@ -85,7 +97,7 @@ export const loadFlights: () => ThunkAction<void, TStoreState, void> = () =>
 
 		dispatch(setIsLoading({value: true}))
 
-		const route = await processRoutes(await apiGetFlights({from, to, dateFrom: date, dateTo: date.clone().add(1, 'days')}), getState())
+		const route = await processRoutes(await apiGetFlights({from, to, dateFrom: date, dateTo: date}), getState())
 		dispatch(setRoutes({value: route}))
 
 		dispatch(setIsLoading({value: false}))
@@ -108,6 +120,7 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 		const route = {} as TRoute
 
 		route.price = rawRoute.price
+		route.currency = rawRoutes.currency
 		route.flights = []
 
 		rawRoute.route.forEach((rawFlight) => {
@@ -120,8 +133,8 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 			}
 
 			flight.airline = airline
-			flight.departureTime = moment(rawFlight.dTimeUTC)
-			flight.arrivalTime = moment(rawFlight.aTimeUTC)
+			flight.departureTime = moment(rawFlight.dTimeUTC * 1000)
+			flight.arrivalTime = moment(rawFlight.aTimeUTC * 1000)
 
 			airportPromises.push(new Promise((resolve) => {
 				if (airportCache.has(rawFlight.flyFrom)) {

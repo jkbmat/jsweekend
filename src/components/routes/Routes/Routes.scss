@@ -1,0 +1,17 @@
+@import "base";
+
+.Page {
+	@include button;
+	display: inline-block;
+
+	&:not(:last-child) {
+		margin-right: 0.5em;
+	}
+
+	&--active {
+		border: 1px solid #3b3b3b;
+		background: white;
+		color: black;
+		cursor: default;
+	}
+}
