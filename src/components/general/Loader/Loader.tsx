@@ -25,7 +25,7 @@ export default class Loader extends React.Component<TProps> {
 
 		return (
 			<div className={`Loader Loader--${size} ${fullWidth ? 'Loader--fullWidth' : ''}`}>
-				<FontAwesome name='spinner' className='Loader__spinner'/>
+				<FontAwesome name='cog' className='Loader__spinner'/>
 			</div>
 		)
 	}

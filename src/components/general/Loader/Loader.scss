@@ -4,7 +4,7 @@
 	}
 
 	to {
-		transform: rotate(360deg);
+		transform: rotate(60deg);
 	}
 }
 
@@ -17,7 +17,7 @@
 	}
 
 	&__spinner {
-		animation: rotate 1s infinite linear;
+		animation: rotate 0.7s infinite ease;
 	}
 
 	&--small {
@@ -25,10 +25,10 @@
 	}
 
 	&--medium {
-		font-size: 22px;
+		font-size: 30px;
 	}
 
 	&--large {
-		font-size: 30px;
+		font-size: 60px;
 	}
 }
