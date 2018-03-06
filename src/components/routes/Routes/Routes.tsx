@@ -80,7 +80,7 @@ class Routes extends React.Component<TProps> {
 				{startPage > 0 && <this.Page pageNumber={0} isActive={false} />}
 				{startPage > 1 && ' ... '}
 
-				{pagesToDisplay.map((page, index) => <this.Page key={index} pageNumber={page} isActive={page === pageNumber} />)}
+				{pagesToDisplay.map((page) => <this.Page key={page} pageNumber={page} isActive={page === pageNumber} />)}
 
 				{endPage < maxPage - 1 && ' ... '}
 				{endPage < maxPage && <this.Page pageNumber={maxPage} isActive={false} />}

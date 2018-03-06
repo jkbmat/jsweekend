@@ -109,7 +109,7 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 	const airportCache: Map<string, Promise<TAirport>> = new Map()
 
 	const airlines = state.modules.general.data.airlines
-	const airportPromises = [] as Array<Promise<void>>
+	const airportPromises = [] as Array<Promise<TAirport>>
 	const data = rawRoutes.data
 
 	if (airlines === null) {
@@ -136,61 +136,10 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 			flight.departureTime = moment(rawFlight.dTimeUTC * 1000)
 			flight.arrivalTime = moment(rawFlight.aTimeUTC * 1000)
 
-			airportPromises.push(new Promise((resolve) => {
-				if (airportCache.has(rawFlight.flyFrom)) {
-					(airportCache.get(rawFlight.flyFrom) as Promise<TAirport>).then((airport) => {
-						flight.fromAirport = airport
-
-						resolve()
-					})
-
-					return
-				}
-
-				const locationPromise = apiGetLocation(rawFlight.flyFrom).then((airport) => {
-					if (!airport.locations || !airport.locations.length) {
-						throw new Error(`Could not process flights: Airport ${rawFlight.flyFrom} does not exist.`)
-					}
-
-					return airport.locations[0] as TAirport
-				})
-
-				airportCache.set(rawFlight.flyFrom, locationPromise)
-
-				locationPromise.then((airport) => {
-					flight.fromAirport = airport
-
-					return resolve()
-				})
-			}))
-
-			airportPromises.push(new Promise((resolve) => {
-				if (airportCache.has(rawFlight.flyTo)) {
-					(airportCache.get(rawFlight.flyTo) as Promise<TAirport>).then((airport) => {
-						flight.toAirport = airport
-
-						resolve()
-					})
-
-					return
-				}
-
-				const locationPromise = apiGetLocation(rawFlight.flyTo).then((airport) => {
-					if (!airport.locations || !airport.locations.length) {
-						throw new Error(`Could not process flights: Airport ${rawFlight.flyTo} does not exist.`)
-					}
-
-					return airport.locations[0] as TAirport
-				})
-
-				airportCache.set(rawFlight.flyTo, locationPromise)
-
-				locationPromise.then((airport) => {
-					flight.toAirport = airport
-
-					return resolve()
-				})
-			}))
+			airportPromises.push(
+				loadLocationCachedPromise(rawFlight.flyFrom, airportCache).then((airport: TAirport) => flight.fromAirport = airport),
+				loadLocationCachedPromise(rawFlight.flyTo, airportCache).then((airport: TAirport) => flight.toAirport = airport),
+			)
 		})
 
 		return Promise.all(airportPromises).then(() => {
@@ -201,4 +150,32 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 	await Promise.all(routePromises)
 
 	return ret
+}
+
+function loadLocationCachedPromise (id: string, cache: Map<string, Promise<TLocation>>): Promise<TLocation> {
+	return new Promise((resolve) => {
+		if (cache.has(id)) {
+			(cache.get(id) as Promise<TLocation>).then((location) => {
+				resolve(location)
+			})
+
+			return
+		}
+
+		const apiPromise = apiGetLocation(id).then((location) => {
+			if (!location.locations || !location.locations.length) {
+				throw new Error(`Could not process flights: Airport ${id} does not exist.`)
+			}
+
+			return location.locations[0]
+		})
+
+		cache.set(id, apiPromise)
+
+		apiPromise.then((location) => {
+			resolve(location)
+
+			return
+		})
+	})
 }
