@@ -12,7 +12,7 @@ import {
 	setIsLoading, setSuggestions, setValue, setSearchValue, setSelectedSuggestion, setDate, loadSuggestions,
 	setFocusedField,
 } from 'store/search/search-actions'
-import {loadFlights} from 'store/routes/routes-actions'
+import {loadFlights, setPageNumber} from 'store/routes/routes-actions'
 
 import {ESearchInputField} from 'store/search/search-defaultState'
 
@@ -26,6 +26,7 @@ import {
 	TSetIsLoadingPayload as TSetIsLoadingPayloadSearch, TSetSuggestionsPayload, TSetValuePayload, TSetSearchValuePayload,
 	TSetDatePayload, TSetSelectedSuggestionPayload, TSetFocusedFieldPayload, TLoadSuggestionsPayload,
 } from 'store/search/search-actions'
+import {TSetOffsetAction, TSetPageNumberPayload} from 'store/routes/routes-actions'
 import {TFieldInfo} from 'store/search/search-selectors'
 import {Moment} from 'moment'
 import {TLocation} from 'types/TLocation'
@@ -49,6 +50,7 @@ interface TConnectedProps {
 	setFocusedField: (payload: TSetFocusedFieldPayload) => TSetFocusedFieldAction,
 	setSelectedSuggestion: (payload: TSetSelectedSuggestionPayload) => TSetSelectedSuggestionAction,
 	loadSuggestions: (payload: TLoadSuggestionsPayload) => ThunkAction<void, TStoreState, void>,
+	setPageNumber: (payload: TSetPageNumberPayload) => ThunkAction<TSetOffsetAction, TStoreState, void>,
 
 	loadFlights: () => ThunkAction<void, TStoreState, void>,
 }
@@ -96,8 +98,9 @@ class SearchBox extends React.Component<TProps> {
 	}
 
 	handleSubmit = async () => {
-		const {loadFlights} = this.props
+		const {loadFlights, setPageNumber} = this.props
 
+		setPageNumber({value: 0})
 		loadFlights()
 	}
 
@@ -228,6 +231,7 @@ export default connect(
 		setIsLoading,
 		setSelectedSuggestion,
 		setFocusedField,
+		setPageNumber,
 		loadSuggestions,
 
 		loadFlights,
