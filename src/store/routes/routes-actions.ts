@@ -132,6 +132,7 @@ async function processRoutes (rawRoutes: TFlightsRaw, state: TStoreState): Promi
 				throw new Error(`Could not process flights: Airline ${rawFlight.airline} does not exist.`)
 			}
 
+			flight.id = rawFlight.id
 			flight.airline = airline
 			flight.departureTime = moment(rawFlight.dTimeUTC * 1000)
 			flight.arrivalTime = moment(rawFlight.aTimeUTC * 1000)

@@ -1,13 +1,15 @@
 .Route {
 	border: 1px solid #3b3b3b;
 	border-radius: 3px;
+	margin-top: 1em;
 
 	&__header {
 		display: flex;
 		align-items: center;
-		background: #eee;
-		border-radius: 3px;
+		background: #d5deec;
+		border-radius: 3px 3px 0 0;
 		padding: 0.5em 1em;
+		border-bottom: 1px solid #3b3b3b;
 	}
 
 	&__header-from {
@@ -60,5 +62,24 @@
 		font-weight: bold;
 		max-width: 170px;
 		width: 170px;
+	}
+
+	&__flights {
+		width: 100%;
+		border-collapse: collapse;
+		border-style: hidden;
+
+		thead {
+			background: #eee;
+
+			td {
+				text-align: center;
+			}
+		}
+
+		td {
+			border: 1px solid #3b3b3b;
+			padding: 0.5em;
+		}
 	}
 }

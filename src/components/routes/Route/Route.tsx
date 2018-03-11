@@ -3,9 +3,10 @@ import * as moment from 'moment'
 
 import * as FontAwesome from 'react-fontawesome'
 
-import {TRoute} from 'types/TRoute'
+import {TFlight, TRoute} from 'types/TRoute'
 
 import './Route.css'
+import Flight from 'components/routes/Flight/Flight'
 
 
 interface TProps {
@@ -55,6 +56,20 @@ export default class Route extends React.Component<TProps> {
 						{duration.format('h [hours], m [minutes]')}
 					</div>
 				</div>
+				
+				<table className='Route__flights'>
+					<thead>
+						<tr>
+							<td>Departure</td>
+							<td>Arrival</td>
+							<td>Duration</td>
+							<td>Airline</td>
+						</tr>
+					</thead>
+					<tbody>
+						{route.flights.map((flight: TFlight) => <Flight key={flight.id} flight={flight}/>)}
+					</tbody>
+				</table>
 			</div>
 		)
 	}

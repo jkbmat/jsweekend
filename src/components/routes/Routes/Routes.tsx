@@ -77,13 +77,15 @@ class Routes extends React.Component<TProps> {
 			<div className='Routes'>
 				{routes.map((route, index) => <Route key={index} route={route}/>)}
 
-				{startPage > 0 && <this.Page pageNumber={0} isActive={false} />}
-				{startPage > 1 && ' ... '}
+				<div className='Routes__pagination'>
+					{startPage > 0 && <this.Page pageNumber={0} isActive={false} />}
+					{startPage > 1 && ' ... '}
 
-				{pagesToDisplay.map((page) => <this.Page key={page} pageNumber={page} isActive={page === pageNumber} />)}
+					{pagesToDisplay.map((page) => <this.Page key={page} pageNumber={page} isActive={page === pageNumber} />)}
 
-				{endPage < maxPage - 1 && ' ... '}
-				{endPage < maxPage && <this.Page pageNumber={maxPage} isActive={false} />}
+					{endPage < maxPage - 1 && ' ... '}
+					{endPage < maxPage && <this.Page pageNumber={maxPage} isActive={false} />}
+				</div>
 			</div>
 		)
 	}

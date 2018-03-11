@@ -9,6 +9,7 @@ export type TRoute = {
 }
 
 export type TFlight = {
+	id: string,
 	airline: TAirline,
 	departureTime: Moment,
 	arrivalTime: Moment,
@@ -23,6 +24,7 @@ export type TFlightsRaw = {
 		price: number,
 
 		route: Array<{
+			id: string,
 			dTimeUTC: number,
 			aTimeUTC: number,
 			airline: TAirlineCode,
