@@ -8,4 +8,5 @@ To run, follow these steps:
 
 Tech stack:
 * TypeScript
+* Redux
 * Sass
