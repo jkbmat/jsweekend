@@ -10,7 +10,7 @@ export enum ERequestMethod {
 	DELETE = 'DELETE',
 }
 
-export function apiRequest (url: string, method: ERequestMethod = ERequestMethod.GET, body: any = {}): Promise<any> {
+export function apiRequest (url: string, method: ERequestMethod = ERequestMethod.GET, body: any = undefined): Promise<any> {
 	return fetch(url, {
 		method,
 		body,
